@@ -8,12 +8,13 @@ import { Block } from "@ethereumjs/block";
 interface DeployOptions {
     privateKey: Uint8Array;
     bytecode: string;
-    types: string[];
+    abi: any;
     args: any[]
     block: Block;
 }
 export default async function deployVMContract (vm: VM, options: DeployOptions) {
-    const data = createVMDeploymentTx(options.bytecode, { types: options.types, values: options.args });
+    const types = options.abi.find((x: any) => x.type === "constructor").inputs.map((x: any) => x.type);
+    const data = createVMDeploymentTx(options.bytecode, { types: types, values: options.args });
     const vmTx = await buildVmTx({
         data,
         nonce: await getVmAccountNonceForPrivKey(vm, options.privateKey)
@@ -24,5 +25,8 @@ export default async function deployVMContract (vm: VM, options: DeployOptions) 
 
     if (deployment.execResult.exceptionError) throw deployment.execResult.exceptionError;
 
-    return deployment.createdAddress;
+    return {
+        address: deployment.createdAddress,
+        tx: tx
+    };
 }

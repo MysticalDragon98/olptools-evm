@@ -1,82 +1,50 @@
-import { Address, hexToBytes } from "@ethereumjs/util";
-import { log } from "termx";
+import { bytesToHex, hexToBytes } from "@ethereumjs/util";
 import { readFileSync } from "fs";
-import createVM from "./lib/modules/vm/createVM";
-import initVMAccount from "./lib/modules/vm/initVMAccount";
-import deployVMContract from "./lib/modules/vm/deployVMContract";
-import createBlock from "./lib/modules/vm/createBlock";
-import runVMContractCall from "./lib/modules/vm/runVMContractCall";
-import runVMContractSend from "./lib/modules/vm/runVMContractSend";
+import EVM from "./lib/classes/EVM.class";
+import { log } from "termx";
+import runVMContractTx from "./lib/modules/vm/runVMContractTx";
+import { LegacyTransaction } from "@ethereumjs/tx";
 
 const PRIVKEY = hexToBytes("0xcc623631ebbdb066b2af3b8418cd085cbc804668f52fe87088b18652e71c9b09");
-const ADDRESS = Address.fromPrivateKey(PRIVKEY);
 const CONTRACT_BYTECODE = JSON.parse(readFileSync("./lib/contracts/IdentityService.json", "utf-8")).bytecode;
 const CONTRACT_ABI = JSON.parse(readFileSync("./lib/contracts/IdentityService.json", "utf-8")).abi;
 
-log("Starting VM with address: " + ADDRESS.toString());
-
 (async function () {
-    const vm = await createVM();
-    const block = await createBlock();
-    await initVMAccount(vm, ADDRESS);
-    
-    const IdentityService = await deployVMContract(vm, {
-        privateKey: PRIVKEY,
-        bytecode: CONTRACT_BYTECODE,
-        types: [],
-        args: [],
-        block
+    const evm = await EVM.create({
+        defaultBalance: BigInt(10) ** BigInt(20), // 100 ETH
+
+        accounts: {
+            owner: PRIVKEY
+        },
+
+        abis: {
+            IdentityService: { abi: CONTRACT_ABI, bytecode: CONTRACT_BYTECODE }
+        },
+
     });
 
-    log("Deployed IdentityService contract at address: " + IdentityService.toString());
+    const account = evm.accounts.get("owner");
+    const contractAddress = await account.deployContract("IdentityService", []);
+    const IdentityService = account.contract("IdentityService", contractAddress);
 
-    const results = await runVMContractCall(vm, IdentityService, {
-        abi: CONTRACT_ABI,
-        args: [ADDRESS.toString()],
-        block,
-        caller: ADDRESS,
-        method: "get"
+    await IdentityService.set("test");
+    await IdentityService.set("test2");
+
+    // const transactions = evm.serializedTransactions();
+    const evm2 = await EVM.create({
+        defaultBalance: BigInt(10) ** BigInt(20), // 100 ETH
+
+        accounts: {
+            owner: PRIVKEY
+        },
+
+        abis: {
+            IdentityService: { abi: CONTRACT_ABI, bytecode: CONTRACT_BYTECODE }
+        },
+
+        transactions: evm.transactions()
     });
 
-    log("get() result: " + JSON.stringify(results));
-
-    const setResult = await runVMContractSend(vm, IdentityService, {
-        abi: CONTRACT_ABI,
-        args: ["fake-fata"],
-        method: "set",
-        block,
-        privateKey: PRIVKEY
-    });
-
-    log("set() result: " + JSON.stringify(setResult));
-
-    const results2 = await runVMContractCall(vm, IdentityService, {
-        abi: CONTRACT_ABI,
-        args: [ADDRESS.toString()],
-        block,
-        caller: ADDRESS,
-        method: "get"
-    });
-
-    log("get() result: " + JSON.stringify(results2));
-
-     await runVMContractSend(vm, IdentityService, {
-        abi: CONTRACT_ABI,
-        args: ["fake-data"],
-        method: "set",
-        block,
-        privateKey: PRIVKEY
-    });
-
-
-    const results3 = await runVMContractCall(vm, IdentityService, {
-        abi: CONTRACT_ABI,
-        args: [ADDRESS.toString()],
-        block,
-        caller: ADDRESS,
-        method: "get"
-    });
-
-    log("get() result: " + JSON.stringify(results3));
-
+    const IdentityService2 = evm2.accounts.get("owner").contract("IdentityService", contractAddress);
+    log(await IdentityService2.get(account.hexAddress()));
 })().catch(console.log);

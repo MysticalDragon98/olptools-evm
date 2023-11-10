@@ -337,6 +337,23 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@mysticaldragon/proxies@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@mysticaldragon/proxies/-/proxies-1.0.0.tgz#df01b84f96de64959330ec8fc63bcf48c2109521"
+  integrity sha512-oAUdIJyd4Zy1cEigYVR5brnHBjqPtLjWOjbQfbKuNyr1qB3e102zCMZM7ZN4HJS+C2Dreb87nZXMkHEkgXHn1w==
+  dependencies:
+    "@mysticaldragon/utils" "^1.0.9"
+    "@types/node" "^16.7.2"
+    typescript "^4.3.5"
+
+"@mysticaldragon/utils@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.npmjs.org/@mysticaldragon/utils/-/utils-1.0.9.tgz#91f78977b1cb8ef1959f68ea887aa428497fd0bb"
+  integrity sha512-xlEK1JqZoWIC9wW++R873VkaTEPN6lSuOtyMDnMKK+iyfSryjex8jDLVH0YT6f/sKNDqDuaH2NDC/3yjGQh4cw==
+  dependencies:
+    "@types/node" "^16.7.2"
+    typescript "^4.3.5"
+
 "@noble/curves@1.1.0", "@noble/curves@~1.1.0":
   version "1.1.0"
   resolved "https://registry.npmjs.org/@noble/curves/-/curves-1.1.0.tgz#f13fc667c89184bc04cccb9b11e8e7bae27d8c3d"
@@ -431,6 +448,11 @@
   version "12.20.55"
   resolved "https://r.cnpmjs.org/@types/node/-/node-12.20.55.tgz#c329cbd434c42164f846b909bd6f85b5537f6240"
   integrity sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==
+
+"@types/node@^16.7.2":
+  version "16.18.61"
+  resolved "https://registry.npmjs.org/@types/node/-/node-16.18.61.tgz#5ea47e3018348bf3bbbe646b396ba5e720310be1"
+  integrity sha512-k0N7BqGhJoJzdh6MuQg1V1ragJiXTh8VUBAZTWjJ9cUq23SG0F0xavOwZbhiP4J3y20xd6jxKx+xNUhkMAi76Q==
 
 "@types/node@^20.5.0":
   version "20.5.0"
@@ -783,6 +805,11 @@ typescript@^3.5.3:
   version "3.9.10"
   resolved "https://r2.cnpmjs.org/typescript/-/typescript-3.9.10.tgz#70f3910ac7a51ed6bef79da7800690b19bf778b8"
   integrity sha512-w6fIxVE/H1PkLKcCPsFqKE7Kv7QUwhU8qQY2MueZXWx5cPZdwFupLgKK3vntcK98BtNHZtAF4LA/yl2a7k8R6Q==
+
+typescript@^4.3.5:
+  version "4.9.5"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-4.9.5.tgz#095979f9bcc0d09da324d58d03ce8f8374cbe65a"
+  integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
 
 typescript@^5.1.6:
   version "5.1.6"

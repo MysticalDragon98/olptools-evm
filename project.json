@@ -1,4 +1,7 @@
 {
   "module": false,
-  "type": "ts"
+  "type": "ts",
+  "plugins": [
+    "proxies"
+  ]
 }
