@@ -1,5 +1,5 @@
 {
-  "name": "ts-node",
+  "name": "@olptools/evm",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -17,6 +17,7 @@
     "typescript": "^5.1.6"
   },
   "scripts": {
-    "start": "ts-node index.ts"
+    "start": "ts-node index.ts",
+    "build": "tsc"
   }
 }

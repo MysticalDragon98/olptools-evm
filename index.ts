@@ -1,50 +1,65 @@
-import { bytesToHex, hexToBytes } from "@ethereumjs/util";
-import { readFileSync } from "fs";
-import EVM from "./lib/classes/EVM.class";
-import { log } from "termx";
-import runVMContractTx from "./lib/modules/vm/runVMContractTx";
-import { LegacyTransaction } from "@ethereumjs/tx";
+import $EVM from "./lib/classes/EVM.class";
+export const EVM = $EVM;
 
-const PRIVKEY = hexToBytes("0xcc623631ebbdb066b2af3b8418cd085cbc804668f52fe87088b18652e71c9b09");
-const CONTRACT_BYTECODE = JSON.parse(readFileSync("./lib/contracts/IdentityService.json", "utf-8")).bytecode;
-const CONTRACT_ABI = JSON.parse(readFileSync("./lib/contracts/IdentityService.json", "utf-8")).abi;
+import $EVMAccountManager from "./lib/classes/EVMAccountManager.class";
+export const EVMAccountManager = $EVMAccountManager;
 
-(async function () {
-    const evm = await EVM.create({
-        defaultBalance: BigInt(10) ** BigInt(20), // 100 ETH
+import $EVMBlock from "./lib/classes/EVMBlock.class";
+export const EVMBlock = $EVMBlock;
 
-        accounts: {
-            owner: PRIVKEY
-        },
+import $EVMContractManager from "./lib/classes/EVMContractManager.class";
+export const EVMContractManager = $EVMContractManager;
 
-        abis: {
-            IdentityService: { abi: CONTRACT_ABI, bytecode: CONTRACT_BYTECODE }
-        },
+import $EVMContract from "./lib/classes/EVMContract.class";
+export const EVMContract = $EVMContract;
 
-    });
+import $EVMAccount from "./lib/classes/EVMAccount.class";
+export const EVMAccount = $EVMAccount;
 
-    const account = evm.accounts.get("owner");
-    const contractAddress = await account.deployContract("IdentityService", []);
-    const IdentityService = account.contract("IdentityService", contractAddress);
+import $buildVmTx from "./lib/modules/vm/buildVmTx";
+export const buildVmTx = $buildVmTx;
 
-    await IdentityService.set("test");
-    await IdentityService.set("test2");
+import $runVMContractTx from "./lib/modules/vm/runVMContractTx";
+export const runVMContractTx = $runVMContractTx;
 
-    // const transactions = evm.serializedTransactions();
-    const evm2 = await EVM.create({
-        defaultBalance: BigInt(10) ** BigInt(20), // 100 ETH
+import $toVMTransaction from "./lib/modules/vm/toVMTransaction";
+export const toVMTransaction = $toVMTransaction;
 
-        accounts: {
-            owner: PRIVKEY
-        },
+import $createVM from "./lib/modules/vm/createVM";
+export const createVM = $createVM;
 
-        abis: {
-            IdentityService: { abi: CONTRACT_ABI, bytecode: CONTRACT_BYTECODE }
-        },
+import $createBlock from "./lib/modules/vm/createBlock";
+export const createBlock = $createBlock;
 
-        transactions: evm.transactions()
-    });
+import $createVMDeploymentTx from "./lib/modules/vm/createVMDeploymentTx";
+export const createVMDeploymentTx = $createVMDeploymentTx;
 
-    const IdentityService2 = evm2.accounts.get("owner").contract("IdentityService", contractAddress);
-    log(await IdentityService2.get(account.hexAddress()));
-})().catch(console.log);
+import $createVMFunctionCallTx from "./lib/modules/vm/createVMFunctionCallTx";
+export const createVMFunctionCallTx = $createVMFunctionCallTx;
+
+import $deployVMContract from "./lib/modules/vm/deployVMContract";
+export const deployVMContract = $deployVMContract;
+
+import $generateVMContractSendTx from "./lib/modules/vm/generateVMContractSendTx";
+export const generateVMContractSendTx = $generateVMContractSendTx;
+
+import $getVmAccountNonceForPrivKey from "./lib/modules/vm/getVmAccountNonceForPrivKey";
+export const getVmAccountNonceForPrivKey = $getVmAccountNonceForPrivKey;
+
+import $getVMContract from "./lib/modules/vm/getVMContract";
+export const getVMContract = $getVMContract;
+
+import $initVMAccount from "./lib/modules/vm/initVMAccount";
+export const initVMAccount = $initVMAccount;
+
+import $runVMContractCall from "./lib/modules/vm/runVMContractCall";
+export const runVMContractCall = $runVMContractCall;
+
+import $runVMContractSend from "./lib/modules/vm/runVMContractSend";
+export const runVMContractSend = $runVMContractSend;
+
+import $setVMAccount from "./lib/modules/vm/setVMAccount";
+export const setVMAccount = $setVMAccount;
+
+import $toVMAddress from "./lib/modules/vm/toVMAddress";
+export const toVMAddress = $toVMAddress;
